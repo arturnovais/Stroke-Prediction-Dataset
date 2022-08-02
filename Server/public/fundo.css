@@ -1,0 +1,54 @@
+body{
+    /*background: linear-gradient(#000000, #7a0909, #000000);
+    */
+    /*
+        background: radial-gradient(#c95858, #f8f4f4);
+        // 
+    */
+
+    background-image: url("background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bloods{
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	box-shadow: 50px 30px rgb(211, 102, 102),
+    10px 20vh rgb(211, 9, 9),
+    80px 120px rgb(211, 9, 9),
+    300px 20px rgb(211, 9, 9),
+    250px 130px rgb(211, 9, 9),
+    200px 50px rgb(211, 9, 9),
+    320px 100px red,
+    10px 20px white ;
+   
+    animation: anim-blods2 10s linear infinite;
+    position: fixed;
+    left:0;
+    top:0;
+    z-index: 0;
+}
+
+ 
+
+ 
+ 
+@keyframes anim-blods {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(100vh);
+    }
+  }
+
+  @keyframes anim-blods2 {
+    from {
+        transform: translateY(0px) rotate(-45deg) 
+    }
+    to {
+        transform: translateY(100vh) rotate(-45deg) 
+    }
+  }

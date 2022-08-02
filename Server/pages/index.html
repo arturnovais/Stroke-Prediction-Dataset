@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> </title>
+  <link rel="stylesheet" href="teste.css">
+  <link rel="stylesheet" href="fundo.css">
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+
+  <script>
+    let model_heart;
+    let test_tensor;
+
+    async function Start(){
+        // carregar o modelo salvo
+        model_heart = await tf.loadLayersModel('/model/model.json');
+
+        // habilitar o botao, apos carregar
+        test_tensor = tf.tensor2d([[1,0.3,0.4,0.3,0.1]]);
+
+        console.log(model_heart.predict(test_tensor).print());
+    }
+    Start()
+
+    
+    function ChangePainVisibility(b = true){
+      el = document.getElementById("div_pain");
+      for (i = 0; i < el.children.length; i ++)
+        if (el.children[i].tagName == 'INPUT'){
+          el.children[i].disabled = !b;
+          el.children[i].checked = false;
+        }
+    }
+
+    
+
+  </script>
+
+    <header>
+    
+      <h1>Predição</h1>
+      <h1>Informações</h1>
+      <h1>Sobre</h1>
+
+   </header>
+    <!-- coração no canto esquerdo -->
+    <div class="box"> <div class="heart">   </div> </div>
+
+         <!-- animação atrás  -->
+        <div class="bloods" ></div>
+
+          <!-- Formulário de predição-->
+          <div class="form">
+                <h1>Vamos testar esse coraçãozinho?</h1>
+                
+                <!-- Exercise angina 
+                <input type="checkbox" name="exercise_angina">
+                <label for="exercise_angina">exercise_angina</label>
+                -->
+                 
+
+                <!-- maxHr -->
+                <h2>Qual sua idade</h2>
+                <input type="number" name="age" min="18" id="age"> 
+
+                <!---->
+                <h2>Você sente desconforto no peito?</h2>
+                <input class="red" type="radio" name="exercise_angina" id="exercise_angina_s" value="s" onclick="ChangePainVisibility(true)">
+                <label for="exercise_angina_s">Sim</label>
+
+                <input class="green" type="radio" name="exercise_angina" id="exercise_angina_n" value="n" onclick="ChangePainVisibility(false)">
+                <label  for="exercise_angina_n" >Não, meu coração é bom!!</label>
+                
+
+                <!-- Sente dor / desconforto-->
+                <div id="div_pain">
+                  <!---->
+                  <h2>O desconforto tem características e durações típicas?</h2>
+                  
+                  <input class="red" type="radio" name="dor_duracao_tipica" id="dor_duracao_tipica_s" value="s">
+                  <label for="dor_duracao_tipica_s">Sim</label>
+                  <input class="green" type="radio" name="dor_duracao_tipica" id="dor_duracao_tipica_n" value="n">
+                  <label  for="dor_duracao_tipica_n" >Não</label>
+                  
+                  <!-- -->
+                  <h2>Tem como fator stress ou questões emocionais?</h2>
+                  <input class="red" type="radio" name="dor_stress" id="dor_stress_s" value="s">
+                  <label for="dor_stress_s">Sim</label>
+                  <input class="green" type="radio" name="dor_stress" id="dor_stress_n" value="n">
+                  <label  for="dor_stress_n" >Não</label>
+                  
+                  <!-- -->
+                  <h2>Alivia em repouso ou com remédios?</h2>
+                  <input class="green" type="radio" name="dor_alivio" id="dor_alivio_s" value="s">
+                  <label for="dor_alivio_s">Sim</label>
+                  <input class="red" type="radio" name="dor_alivio" id="dor_alivio_n" value="n">
+                  <label  for="dor_alivio_n" >Não</label>
+                  
+                  <!-- -->
+                  <h2>Aparece ao fazer exercícios físicos?</h2>
+                  <input class="red" type="radio" name="dor_exercicio" id="dor_exercicio_s" value="s">
+                  <label for="dor_exercicio_s">Sim</label>
+                  <input class="green" type="radio" name="dor_exercicio" id="dor_exercicio_n" value="n">
+                  <label  for="dor_exercicio_n" >Não</label>
+                  
+                  
+                </div>
+
+                
+
+
+                <!-- st_slope -->
+                <h2>st_slope</h2>
+                <input class="laranja" type="radio" name="st_slope" id="st_slope_1" value="1">
+                <label for="st_slope_1"><img class="img_input" src="up.jpg"></label>
+
+                <input class="laranja" type="radio" name="st_slope" id="st_slope_2" value="2">
+                <label  for="st_slope_2" ><img class="img_input" src="horizontal.jpg"></label>
+
+                <input class="laranja" type="radio" name="st_slope" id="st_slope_3" value="3">
+                <label  for="st_slope_3"><img class="img_input" src="down.jpg"></label>
+                
+                
+
+                <!-- oldpeak -->
+                <h2>OldPeak</h2>
+        
+                <label id="trackbar_value" class="label_tracker">.</label>
+                 
+
+                <div class="trackbarcontainer">
+                  <input type="range" min="-26" max="62" value="10" class="trackbar" id="Trackbar">
+                </div>
+ 
+                <br><br><br>
+                
+                <button onclick="predition()"> Sim, eu tenho coragem!</button>
+
+          </div>
+
+
+          
+
+  <br>
+  <!--
+  <footer>
+    <h1>Teste</h1>
+  </footer>
+  -->
+<script>
+  var slider = document.getElementById("Trackbar");
+     
+      slider.oninput = function() {
+      info = 'sem risco';
+
+      v = this.value;
+      c = 'hsl(112, 100%, 50%';
+      if (v < 15){ // sem risco
+          c = 'hsl(112, 100%, 50%';
+          this.style.background = "rgb(166, 233, 171)";
+          info = 'sem risco';
+
+      }else if (v < 20){ // baixo risco
+          c = 'hsl(39, 100%, 50%';
+          this.style.background = "rgb(205, 233, 131)";
+          info = 'Baixo risco';
+          
+      }else if (v < 25){ // medio risco
+          c = 'hsl(22, 100%, 50%';
+          this.style.background = "rgb(247, 148, 68)";
+          info = 'Médio risco';
+          
+
+      }else if (v < 42){ // alto risco
+          c = 'hsl(0, 100%, 50%';
+          this.style.background = "rgb(252, 119, 93)";
+          info = 'Alto risco';
+
+      }else{  
+          c = 'hsl(39, 100%, 50%';
+          this.style.background = "rgb(205, 233, 131)";
+          info = '';
+          
+      }
+      document.getElementById("trackbar_value").innerText = (this.value/10) +" - "+info;
+ 
+      
+      // if (this.value > 50) this.style.background = "red";
+        /*
+                  Baixo risco = Menores que 2
+	                Médio risco = Entre 2 e 2.55
+	                Alto risco = Acima de 2.55
+        */        
+
+        this.style.setProperty('--trackbarColor', c)    
+    }
+
+</script>
+
+<script>
+  // script para realizar a predição
+  function getId(id){ return document.getElementById(id)}
+  
+  function predition(){
+    age = getId('age').value;
+    
+    dor_peito = getId("exercise_angina_s").checked;
+    dor_duracao= getId("dor_duracao_tipica_s").checked;
+    dor_stree = getId("dor_stress_s").checked;
+    dor_alivia = getId("dor_alivio_s").checked;
+    dor_exercise = getId("dor_exercicio_s").checked;
+    
+    dor_slope = 0;
+    for (i = 1; i <=3; i++)
+      if (getId("st_slope_"+i).checked)
+        dor_slope = i;
+
+    old_peak = getId("Trackbar").value / 10;
+
+    
+
+    max_hr = 220 - age;
+    chesPain_type = 4;
+    if ( dor_peito){
+      chesPain_type = 3;
+      qtd = dor_duracao + dor_stree + !dor_alivia;
+      switch(qtd){
+        case 1: chesPain_type = 3;
+                break;
+        case 2: chesPain_type = 2;
+                break;
+        case 3: chesPain_type = 1;
+                break;
+      }
+    }
+
+    chesPain_type = chesPain_type / 10;
+    max_hr = (max_hr - 60) / (202 - 60);
+    old_peak = (old_peak+2.6) /(6.2+2.6);
+    dor_slope = dor_slope / 10;
+    if (dor_exercise)
+      dor_exercise = 1;
+    else
+      dor_exercise = 0;
+    test_tensor = tf.tensor2d([[ dor_exercise , chesPain_type, max_hr,old_peak,dor_slope  ]]);
+    resultado = model_heart.predict(test_tensor);
+    
+    console.log(
+      dor_exercise , chesPain_type, max_hr,old_peak,dor_slope
+    )
+    console.log(
+    model_heart.predict(test_tensor).print()
+    );
+    
+   alert( resultado.dataSync()[0] )
+ 
+  }
+
+</script>
+
+</body>
+</html>
