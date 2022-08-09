@@ -7,9 +7,13 @@
   <title> </title>
   <link rel="stylesheet" href="teste.css">
   <link rel="stylesheet" href="fundo.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
+            
+
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script> -->
 
   <script>
     let model_heart;
@@ -18,246 +22,243 @@
     async function Start(){
         // carregar o modelo salvo
         model_heart = await tf.loadLayersModel('/model/model.json');
-
+ 
         // habilitar o botao, apos carregar
-        test_tensor = tf.tensor2d([[1,0.3,0.4,0.3,0.1]]);
 
-        console.log(model_heart.predict(test_tensor).print());
+        test_tensor = tf.tensor2d([[1,0.49,0,0,0,0,0.474408,0.344, 1, 0, 0,0]]);
+
+        console.log(  model_heart.predict(test_tensor).print()  );
     }
     Start()
 
-    
-    function ChangePainVisibility(b = true){
-      el = document.getElementById("div_pain");
-      for (i = 0; i < el.children.length; i ++)
-        if (el.children[i].tagName == 'INPUT'){
-          el.children[i].disabled = !b;
-          el.children[i].checked = false;
-        }
-    }
 
-    
 
   </script>
 
     <header>
-    
-      <h1>Predição</h1>
-      <h1>Informações</h1>
-      <h1>Sobre</h1>
+      <a href="#form" class="contact-btn">Predição</a> 
+      <a href="#footer" class="contact-btn">contato</a>
+      <a href="https://github.com/Fazzioni/stroke-predict" class="contact-btn">Código fonte</a>
+      
+      
+ 
 
    </header>
-    <!-- coração no canto esquerdo -->
-    <div class="box"> <div class="heart">   </div> </div>
+   <img src="/brain2.png" class="brain">
+
+ 
 
          <!-- animação atrás  -->
-        <div class="bloods" ></div>
+        <!-- <div class="bloods" >
+        </div> -->
 
           <!-- Formulário de predição-->
-          <div class="form">
-                <h1>Vamos testar esse coraçãozinho?</h1>
+          <div class="form" id="form">
+                <h1> Qual a probabilidade de uma pessoa ter AVC?</h1>
+
+                <!-- Genero -->
+                <h2>Qual seu gênero?</h2>
+                <input class="red" type="radio" name="radio_geneo" id="radio_geneo_w" value="w"  >
+                <label for="radio_geneo_w">Mulher</label>
+                <input class="red" type="radio" name="radio_geneo" id="radio_geneo_m" value="m"  >
+                <label for="radio_geneo_m">Homem</label>
+
+
+                <!-- age -->
+                <h2>Quantos anos xuxu?</h2>
+                <input type="number" name="age" min="18" id="age">  
+
+                <!-- Qual sua altura? -->
+                <h2>Qual sua altura em metros?</h2>
+                <input type="number" name="altura" min="0.5" id="altura"> 
+            
+                <!-- peso? -->
+                <h2>Quantos kg pesa esse corpinho?</h2>
+                <input type="number" name="peso" min="0.5" id="peso"> 
                 
-                <!-- Exercise angina 
-                <input type="checkbox" name="exercise_angina">
-                <label for="exercise_angina">exercise_angina</label>
-                -->
-                 
+                <!-- Hipertensao? -->
+                <h2>Tem hipertensão?</h2>
+                <input class="red" type="radio" name="hipertenso" id="hipertenso_s" value="s"  >
+                <label for="hipertenso_s">Sim</label>
 
-                <!-- maxHr -->
-                <h2>Qual sua idade</h2>
-                <input type="number" name="age" min="18" id="age"> 
-
-                <!---->
-                <h2>Você sente desconforto no peito?</h2>
-                <input class="red" type="radio" name="exercise_angina" id="exercise_angina_s" value="s" onclick="ChangePainVisibility(true)">
-                <label for="exercise_angina_s">Sim</label>
-
-                <input class="green" type="radio" name="exercise_angina" id="exercise_angina_n" value="n" onclick="ChangePainVisibility(false)">
-                <label  for="exercise_angina_n" >Não, meu coração é bom!!</label>
+                <input class="green" type="radio" name="hipertenso" id="hipertenso_n" value="n"  >
+                <label  for="hipertenso_n" >Não!</label>
                 
-
-                <!-- Sente dor / desconforto-->
-                <div id="div_pain">
-                  <!---->
-                  <h2>O desconforto tem características e durações típicas?</h2>
-                  
-                  <input class="red" type="radio" name="dor_duracao_tipica" id="dor_duracao_tipica_s" value="s">
-                  <label for="dor_duracao_tipica_s">Sim</label>
-                  <input class="green" type="radio" name="dor_duracao_tipica" id="dor_duracao_tipica_n" value="n">
-                  <label  for="dor_duracao_tipica_n" >Não</label>
-                  
-                  <!-- -->
-                  <h2>Tem como fator stress ou questões emocionais?</h2>
-                  <input class="red" type="radio" name="dor_stress" id="dor_stress_s" value="s">
-                  <label for="dor_stress_s">Sim</label>
-                  <input class="green" type="radio" name="dor_stress" id="dor_stress_n" value="n">
-                  <label  for="dor_stress_n" >Não</label>
-                  
-                  <!-- -->
-                  <h2>Alivia em repouso ou com remédios?</h2>
-                  <input class="green" type="radio" name="dor_alivio" id="dor_alivio_s" value="s">
-                  <label for="dor_alivio_s">Sim</label>
-                  <input class="red" type="radio" name="dor_alivio" id="dor_alivio_n" value="n">
-                  <label  for="dor_alivio_n" >Não</label>
-                  
-                  <!-- -->
-                  <h2>Aparece ao fazer exercícios físicos?</h2>
-                  <input class="red" type="radio" name="dor_exercicio" id="dor_exercicio_s" value="s">
-                  <label for="dor_exercicio_s">Sim</label>
-                  <input class="green" type="radio" name="dor_exercicio" id="dor_exercicio_n" value="n">
-                  <label  for="dor_exercicio_n" >Não</label>
-                  
-                  
-                </div>
-
+                <!-- heart disease? -->
+                <h2>E esse coração? Tem doença cardíaca?</h2>
+                <input class="red" type="radio" name="heart_disease" id="heart_disease_s" value="s"  >
+                <label for="heart_disease_s">Sim</label>
+                <input class="green" type="radio" name="heart_disease" id="heart_disease_n" value="n" >
+                <label  for="heart_disease_n" >Não!</label>
                 
 
+                <!-- Casamento -->
+                <h2>já foi casado?</h2>
+                <input class="green" type="radio" name="casado" id="casado_s" value="s"  >
+                <label for="casado_s">Sim</label>
 
-                <!-- st_slope -->
-                <h2>st_slope</h2>
-                <input class="laranja" type="radio" name="st_slope" id="st_slope_1" value="1">
-                <label for="st_slope_1"><img class="img_input" src="up.jpg"></label>
+                <input class="green" type="radio" name="casado" id="casado_n" value="n"  >
+                <label  for="casado_n" >Não!</label>
 
-                <input class="laranja" type="radio" name="st_slope" id="st_slope_2" value="2">
-                <label  for="st_slope_2" ><img class="img_input" src="horizontal.jpg"></label>
-
-                <input class="laranja" type="radio" name="st_slope" id="st_slope_3" value="3">
-                <label  for="st_slope_3"><img class="img_input" src="down.jpg"></label>
+                <!-- tipo de trabalho -->
+                <h2>Em qual grupo seu trabalho mais se encaixa?</h2>
+                <input class="green" type="radio" name="work_type" id="work_type_1" value="1"  >
+                <label for="work_type_1">Iniciativa privada</label>
+                <input class="green" type="radio" name="work_type" id="work_type_2" value="2"  >
+                <label  for="work_type_2" >Autonômo</label>
+                <input class="green" type="radio" name="work_type" id="work_type_3" value="3"  >
+                <label  for="work_type_3" >Funcionário público</label>
+                <input class="green" type="radio" name="work_type" id="work_type_4" value="4"  >
+                <label  for="work_type_4" >Nunca trabalhei</label> 
                 
-                
-
-                <!-- oldpeak -->
-                <h2>OldPeak</h2>
-        
-                <label id="trackbar_value" class="label_tracker">.</label>
-                 
-
-                <div class="trackbarcontainer">
-                  <input type="range" min="-26" max="62" value="10" class="trackbar" id="Trackbar">
-                </div>
- 
+                <!-- residencia -->
+                <h2>Em que região você mora?</h2>
+                <input class="green" type="radio" name="regiao_radio" id="regiao_radio_s" value="Urbana"  >
+                <label for="regiao_radio_s">Urbana</label>
+                <input class="green" type="radio" name="regiao_radio" id="regiao_radio_n" value="Rural"  >
+                <label  for="regiao_radio_n" >Rural</label>
                 <br><br><br>
+
                 
-                <button onclick="predition()"> Sim, eu tenho coragem!</button>
+                <button class="contact-btn" onclick="predition()"> Prever!</button>
+
+                <br>
+                <!-- <canvas id="predict_avc" width="600" height="300"></canvas> -->
+                <br>
+                <div id="result" class="result"> </div>
+
 
           </div>
+        <br><br>
+          <footer id="footer" >
+  
+            <h2>Contato:</h2>
+            
+            <div class="profile-card">
+              <div class="card-header">
+                <div class="pic">
+                  <img src="https://avatars.githubusercontent.com/u/79149971" alt="">
+                </div>
+                <div class="name">Daniel Fazzioni</div>
+                <!-- <div class="desc">Developer & Designer</div> -->
+                <div class="sm">
+                  <!-- <a href="#" class="fab fa-discord"></a> -->
+                  
+                  <a href="https://www.instagram.com/dan.fazzi/" class="fab fa-instagram"></a>
+                  <a href="https://github.com/Fazzioni" class="fab fa-github"></a>
+                  <a href="https://www.linkedin.com/in/daniel-fazzioni-831574236/" class="fab fa-linkedin"></a>
+                </div>
+
+                <!-- <a href="#" class="contact-btn">Contact Me</a> -->
+              </div>
+            </div>
 
 
-          
-
-  <br>
-  <!--
-  <footer>
-    <h1>Teste</h1>
-  </footer>
-  -->
-<script>
-  var slider = document.getElementById("Trackbar");
-     
-      slider.oninput = function() {
-      info = 'sem risco';
-
-      v = this.value;
-      c = 'hsl(112, 100%, 50%';
-      if (v < 15){ // sem risco
-          c = 'hsl(112, 100%, 50%';
-          this.style.background = "rgb(166, 233, 171)";
-          info = 'sem risco';
-
-      }else if (v < 20){ // baixo risco
-          c = 'hsl(39, 100%, 50%';
-          this.style.background = "rgb(205, 233, 131)";
-          info = 'Baixo risco';
-          
-      }else if (v < 25){ // medio risco
-          c = 'hsl(22, 100%, 50%';
-          this.style.background = "rgb(247, 148, 68)";
-          info = 'Médio risco';
-          
-
-      }else if (v < 42){ // alto risco
-          c = 'hsl(0, 100%, 50%';
-          this.style.background = "rgb(252, 119, 93)";
-          info = 'Alto risco';
-
-      }else{  
-          c = 'hsl(39, 100%, 50%';
-          this.style.background = "rgb(205, 233, 131)";
-          info = '';
-          
-      }
-      document.getElementById("trackbar_value").innerText = (this.value/10) +" - "+info;
+            <div class="profile-card">
+              <div class="card-header">
+                <div class="pic">
+                  <img src="https://avatars.githubusercontent.com/u/106565223">
+                </div>
+                <div class="name"> Artur Matos</div>
+                
+                <div class="sm">
+                  <a href="https://www.instagram.com/arturmatos__/" class="fab fa-instagram"></a>
+                  <a href="https://github.com/arturnovais" class="fab fa-github"></a>
+                  <a href="https://www.linkedin.com/in/artur-matos-169037234/" class="fab fa-linkedin"></a>
+                </div>
  
+              </div>
+            </div>
+
+              <div class="profile-card">
+                <div class="card-header">
+                  <div class="pic">
+                    <img src="https://avatars.githubusercontent.com/u/110793317">
+                  </div>
+                  <div class="name"> Pedro Mundel </div>  
+                  <div class="sm">
+                    <a href="https://github.com/PedroMundel" class="fab fa-github"></a>
+                    <a href="https://www.linkedin.com/in/pedro-mundel-8aba61218" class="fab fa-linkedin"></a>
+                  </div>
+   
+                </div>
+              </div>
+              <br><br>
+              <div class="profile-card">
+                <div class="card-header">
+                  <div class="pic">
+                    <img src="/BIA.jpg">
+                  </div>
+                  <div class="name"> BIA </div>  
+                  <div class="sm">
+                    <a href="https://www.instagram.com/biaufg/" class="fab fa-instagram"></a>
+                   
+                    <a href="https://inteligenciaartificial.inf.ufg.br/" class="fab fa-internet-explorer"></a>
+  
+                  </div> 
+   
+                </div>
+              </div>
+
+ 
+              
+            
+            <div style="background-color: rgb(20, 18, 18); width:100%;">
+             
+            </div>
+
+
+          </footer >      
+       
+<!-- -->
       
-      // if (this.value > 50) this.style.background = "red";
-        /*
-                  Baixo risco = Menores que 2
-	                Médio risco = Entre 2 e 2.55
-	                Alto risco = Acima de 2.55
-        */        
-
-        this.style.setProperty('--trackbarColor', c)    
-    }
-
-</script>
 
 <script>
   // script para realizar a predição
   function getId(id){ return document.getElementById(id)}
   
   function predition(){
-    age = getId('age').value;
-    
-    dor_peito = getId("exercise_angina_s").checked;
-    dor_duracao= getId("dor_duracao_tipica_s").checked;
-    dor_stree = getId("dor_stress_s").checked;
-    dor_alivia = getId("dor_alivio_s").checked;
-    dor_exercise = getId("dor_exercicio_s").checked;
-    
-    dor_slope = 0;
-    for (i = 1; i <=3; i++)
-      if (getId("st_slope_"+i).checked)
-        dor_slope = i;
+    age = getId('age').value / 100;
+    woman =  getId("radio_geneo_w").checked;
+    casado = getId("casado_s").checked;
 
-    old_peak = getId("Trackbar").value / 10;
-
+    altura = getId('altura').value;
+    peso = getId('peso').value;
+    imc = peso / (altura * altura)
+    imc = imc / 100
+    hipertensao = getId("hipertenso_s").checked
+    doenca_cardiaca = getId("heart_disease_s").checked
     
-
-    max_hr = 220 - age;
-    chesPain_type = 4;
-    if ( dor_peito){
-      chesPain_type = 3;
-      qtd = dor_duracao + dor_stree + !dor_alivia;
-      switch(qtd){
-        case 1: chesPain_type = 3;
-                break;
-        case 2: chesPain_type = 2;
-                break;
-        case 3: chesPain_type = 1;
-                break;
-      }
-    }
-
-    chesPain_type = chesPain_type / 10;
-    max_hr = (max_hr - 60) / (202 - 60);
-    old_peak = (old_peak+2.6) /(6.2+2.6);
-    dor_slope = dor_slope / 10;
-    if (dor_exercise)
-      dor_exercise = 1;
-    else
-      dor_exercise = 0;
-    test_tensor = tf.tensor2d([[ dor_exercise , chesPain_type, max_hr,old_peak,dor_slope  ]]);
-    resultado = model_heart.predict(test_tensor);
+    work_type = [0,0,0,0];
+    work_types =  [ ["work_type_1",0],["work_type_2",1],["work_type_3",2],["work_type_4",3]];
+    for (i = 0; i < work_types.length; i ++)
+      work_type[work_types[i][1]] = getId(work_types[i][0]).checked
+      
+    regiao_urbana = !getId("regiao_radio_s").checked
+    //glucose = (getId("Trackbar").value - 55) / (300 - 55)
+    glucose = (104.48275 - 55) / (300 - 55) // vamos usar a média
     
-    console.log(
-      dor_exercise , chesPain_type, max_hr,old_peak,dor_slope
-    )
-    console.log(
-    model_heart.predict(test_tensor).print()
-    );
+    //gender	age	hypertension	heart_disease	ever_married	Residence_type	avg_glucose_level	bmi	stroke	work_type_Private	work_type_Self-employed	work_type_Govt_job	work_type_Never_worked
     
-   alert( resultado.dataSync()[0] )
  
+    // test_tensor = tf.tensor2d(valores);
+    // console.log(test_tensor);
+    // console.log(model_heart.predict(test_tensor).print());
+
+    //resultado = model_heart.predict(test_tensor);
+    //console.log("Genero: "+woman+"\n   Age:"+age+"\nHipertensao:"+hipertensao+"\ndoença cardiaca:    "+doenca_cardiaca+"\ncasado:    "+casado +"\n regiao urbana:    "+regiao_urbana+"\n glicose:   "+glucose+"\n imc:   "+imc+"\n  wt0:  "+work_type[0]+"   "+work_type[1]+"   "+work_type[2]+"   "+work_type[3])
+    
+ 
+ 
+
+    test_tensor = tf.tensor2d([[  
+        woman, age, hipertensao, doenca_cardiaca, casado , regiao_urbana, glucose, imc, work_type[0],work_type[1],work_type[2],work_type[3], 0,0,0
+      ]]);
+    resultado = model_heart.predict(test_tensor);
+    //console.log(model_heart.predict(test_tensor).print());
+    getId("result").innerText =  (resultado.dataSync()[0] * 100).toFixed(2)+"%";
+
+
   }
 
 </script>
